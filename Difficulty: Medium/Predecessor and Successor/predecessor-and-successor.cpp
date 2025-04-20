@@ -19,38 +19,41 @@ struct Node
 
 
 // } Driver Code Ends
-
 class Solution
 {
     public:
     
-    void find(Node* root, vector<Node*>&nums){
-        
+    void findpre(Node* root, Node*& pre, int &key){
         if(!root) return;
         
-        find(root->left, nums);
-        nums.push_back(root);
+        if(root->key<key){
+            
+            pre = root;
+            findpre(root->right, pre, key);
+        }
+        else{
+            findpre(root->left, pre, key);
+        }
+    }
+    
+    void  findsuc(Node* root, Node*& suc, int &key){
+        if(!root) return;
         
-        find(root->right, nums);
+        if(root->key>key){
+            
+            suc = root;
+            findsuc(root->left, suc, key);
+        }
+        else{
+           findsuc(root->right, suc, key);
+        }
     }
     
     void findPreSuc(Node* root, Node*& pre, Node*& suc, int key)
     {
-        vector<Node*>nums;
-        
-        find(root, nums);
-        
-        for(auto it:nums){
-            
-            if(it->key<key){
-                pre = it;
-            }
-            
-            if(it->key>key){
-                suc = it;
-                break;
-            }
-        }
+       
+       findpre(root, pre, key);
+       findsuc(root, suc, key);
     }
 };
 
